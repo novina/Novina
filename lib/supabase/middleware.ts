@@ -54,11 +54,10 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase.auth as any).getSession()
 
-  if (request.nextUrl.pathname.startsWith("/admin") && !session) {
+  if (request.nextUrl.pathname.startsWith("/admin") && (error || !data?.session)) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
