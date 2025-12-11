@@ -1,8 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server"
 
-// Explicitly use Edge Runtime
-export const runtime = "edge"
-
 export function middleware(request: NextRequest) {
   // Skip API routes entirely
   if (request.nextUrl.pathname.startsWith("/api")) {
