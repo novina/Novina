@@ -154,3 +154,14 @@ export interface NewsTopic {
   updated_at: string
 }
 
+export interface FunnyQuote {
+  id: string
+  text: string
+  mood: "happy" | "think" | "experiment" | "curious" | "alert" | "create" | "future"
+  url: string | null
+  is_active: boolean
+  sort_order: number
+  created_at: string
+  updated_at: string
+  user_id: string | null
+}

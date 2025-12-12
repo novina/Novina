@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client"
 import { NovinaLogo } from "@/components/novina-logo"
 import { Button } from "@/components/ui/button"
 import type { User } from "@supabase/supabase-js"
-import { LayoutDashboard, FileText, Paintbrush, Link2, Globe, Twitter, LogOut, Newspaper, Sparkles } from "lucide-react"
+import { LayoutDashboard, FileText, Paintbrush, Link2, Globe, Twitter, LogOut, Newspaper, Sparkles, MessageCircle } from "lucide-react"
 
 interface AdminSidebarProps {
   user: User
@@ -18,6 +18,7 @@ const navItems = [
   { href: "/admin/articles/new", label: "Novi članak", icon: Newspaper },
   { href: "/admin/ai-news", label: "AI Vijesti", icon: Sparkles },
   { href: "/admin/illustrations", label: "AI Ilustracije", icon: Paintbrush },
+  { href: "/admin/quotes", label: "Šale & Citati", icon: MessageCircle },
   { href: "/admin/tweets", label: "Twitter/X", icon: Twitter },
   { href: "/admin/scraper", label: "Scraper", icon: Globe },
   { href: "/admin/links", label: "Link baza", icon: Link2 },
