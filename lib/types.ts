@@ -165,3 +165,26 @@ export interface FunnyQuote {
   updated_at: string
   user_id: string | null
 }
+
+export interface StandaloneTweet {
+  id: string
+  tweet_url: string
+  tweet_id: string
+  tweet_content: string | null
+  tweet_author: string | null
+  is_published: boolean
+  created_at: string
+  updated_at: string
+  user_id: string | null
+  roasts?: TweetRoast[]
+}
+
+export interface TweetRoast {
+  id: string
+  tweet_id: string
+  model_id: string
+  model_name: string
+  roast_text: string
+  roast_type: "roast" | "comment" | "analysis"
+  created_at: string
+}

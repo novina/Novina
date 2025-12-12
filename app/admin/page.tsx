@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { NovinaMascot } from "@/components/novina-mascot"
+import { SeedContentButton } from "@/components/admin/seed-content-button"
 import Link from "next/link"
 import { FileText, Paintbrush, Globe, Link2, TrendingUp, Clock } from "lucide-react"
 
@@ -40,6 +41,8 @@ export default async function AdminDashboard() {
     .order("created_at", { ascending: false })
     .limit(5)
 
+  const hasContent = (articlesRes.count || 0) > 0
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
@@ -50,6 +53,22 @@ export default async function AdminDashboard() {
         </div>
         <NovinaMascot mood="default" size="lg" />
       </div>
+
+      {/* Seed Content Banner - Show only when no content */}
+      {!hasContent && (
+        <div className="brutalist-border brutalist-shadow p-6 bg-accent/20">
+          <div className="flex items-center gap-4">
+            <NovinaMascot mood="curious" size="lg" />
+            <div className="flex-1">
+              <h2 className="text-xl font-bold mb-1">Baza je prazna!</h2>
+              <p className="text-sm text-muted-foreground mb-3">
+                Klikni gumb da kreiraš početne članke, linkove i šale za demonstraciju.
+              </p>
+              <SeedContentButton />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

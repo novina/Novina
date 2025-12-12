@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { TweetManager } from "@/components/admin/tweet-manager"
+import { TweetRoastManager } from "@/components/admin/tweet-roast-manager"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default async function TweetsPage() {
   const supabase = await createClient()
@@ -19,10 +21,23 @@ export default async function TweetsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
         <h1 className="text-4xl font-black">Twitter/X</h1>
-        <p className="text-muted-foreground font-mono text-sm mt-1">// upravljaj tweet embedovima</p>
+        <p className="text-muted-foreground font-mono text-sm mt-1">// tweetovi i AI roast komentari</p>
       </div>
 
-      <TweetManager tweets={tweets || []} articles={articles || []} />
+      <Tabs defaultValue="roast" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="roast">🔥 Tweet Roast</TabsTrigger>
+          <TabsTrigger value="embed">📎 Article Embeds</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="roast" className="mt-6">
+          <TweetRoastManager />
+        </TabsContent>
+
+        <TabsContent value="embed" className="mt-6">
+          <TweetManager tweets={tweets || []} articles={articles || []} />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
