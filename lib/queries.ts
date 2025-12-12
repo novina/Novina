@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { cache } from "react"
-import type { Article, Category, Author, Link, Illustration, TweetEmbed } from "@/lib/types"
+import type { Article, Category, Author, Link, Illustration, TweetEmbed, StandaloneTweet, TweetRoast } from "@/lib/types"
 
 // ============================================================================
 // TYPES - Explicit return types for all queries
@@ -169,6 +169,7 @@ export interface HomePageData {
     topicOfDay: ArticleWithRelations | null
     illustrationOfDay: (ArticleWithRelations & { illustrations: Illustration[] }) | null
     links: Link[]
+    tweets: (StandaloneTweet & { roasts: TweetRoast[] })[]
 }
 
 /**
@@ -178,7 +179,7 @@ export interface HomePageData {
 export const getHomePageData = cache(async (): Promise<HomePageData> => {
     const supabase = await createClient()
 
-    const [featuredRes, shortNewsRes, topicRes, illustrationRes, linksRes] = await Promise.all([
+    const [featuredRes, shortNewsRes, topicRes, illustrationRes, linksRes, tweetsRes] = await Promise.all([
         // Featured article za hero
         supabase
             .from("articles")
@@ -222,6 +223,14 @@ export const getHomePageData = cache(async (): Promise<HomePageData> => {
             .eq("is_featured", true)
             .order("created_at", { ascending: false })
             .limit(8),
+
+        // Published tweets with roasts
+        supabase
+            .from("standalone_tweets")
+            .select("*, roasts:tweet_roasts(*)")
+            .eq("is_published", true)
+            .order("created_at", { ascending: false })
+            .limit(4),
     ])
 
     return {
@@ -230,6 +239,7 @@ export const getHomePageData = cache(async (): Promise<HomePageData> => {
         topicOfDay: (topicRes.data?.[0] as ArticleWithRelations) || null,
         illustrationOfDay: (illustrationRes.data?.[0] as ArticleWithRelations & { illustrations: Illustration[] }) || null,
         links: (linksRes.data || []) as Link[],
+        tweets: (tweetsRes.data || []) as (StandaloneTweet & { roasts: TweetRoast[] })[],
     }
 })
 

@@ -46,7 +46,7 @@ CREATE POLICY "Authenticated can manage tweets" ON standalone_tweets
 -- Policies for tweet_roasts
 CREATE POLICY "Public can view roasts of published tweets" ON tweet_roasts
   FOR SELECT USING (
-    EXISTS (SELECT 1 FROM standalone_tweets WHERE id = tweet_id AND is_published = true)
+    EXISTS (SELECT 1 FROM standalone_tweets st WHERE st.id = tweet_roasts.tweet_id AND st.is_published = true)
   );
 
 CREATE POLICY "Authenticated can view all roasts" ON tweet_roasts

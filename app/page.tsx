@@ -1,7 +1,7 @@
 import { getHomePageData } from "@/lib/queries"
 import { PublicHeader } from "@/components/public/public-header"
 import { HeroSection } from "@/components/public/hero-section"
-import { ShortNewsGrid } from "@/components/public/short-news-grid"
+import { NewsWithTweetsGrid } from "@/components/public/news-with-tweets-grid"
 import { TopicOfDay } from "@/components/public/topic-of-day"
 import { IllustrationOfDay } from "@/components/public/illustration-of-day"
 import { LinkVault } from "@/components/public/link-vault"
@@ -11,7 +11,7 @@ import { EmptyStateSection } from "@/components/public/empty-state-section"
 
 export default async function HomePage() {
   // Single optimized query - sve u jednom pozivu, cacheirano
-  const { featuredArticle, shortNews, topicOfDay, illustrationOfDay, links } = await getHomePageData()
+  const { featuredArticle, shortNews, topicOfDay, illustrationOfDay, links, tweets } = await getHomePageData()
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,17 +24,17 @@ export default async function HomePage() {
         {/* Funny Banner */}
         <FunnyBanner />
 
-        {/* Short News Grid */}
+        {/* News Grid with Tweets */}
         <section className="py-12 px-4 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="mb-8">
               <h2 className="text-3xl md:text-4xl font-black mb-2 flex items-center gap-3">
                 <span className="w-3 h-3 bg-primary"></span>
-                Kratke vijesti
+                Vijesti
               </h2>
               <p className="text-sm text-muted-foreground italic ml-6">// Brzo, precizno, bez vode. Jer tvoje vrijeme je vrijedno.</p>
             </div>
-            <ShortNewsGrid articles={shortNews} />
+            <NewsWithTweetsGrid articles={shortNews} tweets={tweets} />
           </div>
         </section>
 
