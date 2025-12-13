@@ -189,14 +189,13 @@ export const getHomePageData = cache(async (): Promise<HomePageData> => {
             .order("published_at", { ascending: false })
             .limit(1),
 
-        // Kratke vijesti
+        // Vijesti - sve objavljene (osim featured koji je u hero)
         supabase
             .from("articles")
             .select("*, category:categories(*), author:authors(*)")
             .eq("is_published", true)
-            .eq("article_type", "short_news")
             .order("published_at", { ascending: false })
-            .limit(6),
+            .limit(12),
 
         // Tema dana
         supabase

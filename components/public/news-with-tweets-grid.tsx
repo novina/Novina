@@ -4,35 +4,36 @@ import { Clock } from "lucide-react"
 import { AIAuthorBadge } from "./ai-author-badge"
 import { TweetRoastCard } from "./tweet-roast-card"
 
+interface FeedItem {
+    type: "article" | "tweet"
+    id: string
+    created_at: string
+    data: (Article & { category?: Category; author?: Author }) | (StandaloneTweet & { roasts: TweetRoast[] })
+}
+
 interface NewsWithTweetsGridProps {
     articles: (Article & { category?: Category; author?: Author })[]
     tweets?: (StandaloneTweet & { roasts: TweetRoast[] })[]
 }
 
 export function NewsWithTweetsGrid({ articles, tweets = [] }: NewsWithTweetsGridProps) {
-    // Interleave articles and tweets
-    const items: Array<{ type: "article" | "tweet"; data: typeof articles[0] | typeof tweets[0] }> = []
+    // Combine and sort by date (newest first)
+    const feedItems: FeedItem[] = [
+        ...articles.map((a) => ({
+            type: "article" as const,
+            id: a.id,
+            created_at: a.published_at || a.created_at,
+            data: a,
+        })),
+        ...tweets.map((t) => ({
+            type: "tweet" as const,
+            id: t.id,
+            created_at: t.created_at,
+            data: t,
+        })),
+    ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
-    let articleIndex = 0
-    let tweetIndex = 0
-    let position = 0
-
-    while (articleIndex < articles.length || tweetIndex < tweets.length) {
-        // Insert tweet every 3rd position (positions 2, 5, 8...)
-        if ((position + 1) % 3 === 0 && tweetIndex < tweets.length) {
-            items.push({ type: "tweet", data: tweets[tweetIndex] })
-            tweetIndex++
-        } else if (articleIndex < articles.length) {
-            items.push({ type: "article", data: articles[articleIndex] })
-            articleIndex++
-        } else if (tweetIndex < tweets.length) {
-            items.push({ type: "tweet", data: tweets[tweetIndex] })
-            tweetIndex++
-        }
-        position++
-    }
-
-    if (items.length === 0) {
+    if (feedItems.length === 0) {
         return (
             <div className="brutalist-border p-12 text-center bg-muted/30">
                 <p className="text-muted-foreground">Vijesti uskoro...</p>
@@ -42,7 +43,7 @@ export function NewsWithTweetsGrid({ articles, tweets = [] }: NewsWithTweetsGrid
 
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((item, index) => {
+            {feedItems.map((item) => {
                 if (item.type === "tweet") {
                     const tweet = item.data as StandaloneTweet & { roasts: TweetRoast[] }
                     return <TweetRoastCard key={`tweet-${tweet.id}`} tweet={tweet} />
@@ -53,8 +54,7 @@ export function NewsWithTweetsGrid({ articles, tweets = [] }: NewsWithTweetsGrid
                     <Link
                         key={article.id}
                         href={`/article/${article.slug}`}
-                        className={`group brutalist-border brutalist-shadow brutalist-hover bg-card p-6 flex flex-col ${index === 0 ? "md:col-span-2 lg:col-span-1" : ""
-                            }`}
+                        className="group brutalist-border brutalist-shadow brutalist-hover bg-card p-6 flex flex-col"
                     >
                         {article.category && (
                             <span
@@ -72,10 +72,7 @@ export function NewsWithTweetsGrid({ articles, tweets = [] }: NewsWithTweetsGrid
                         {article.excerpt && <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{article.excerpt}</p>}
 
                         <div className="mt-4 pt-4 border-t border-border space-y-3">
-                            {/* AI Author Badge */}
                             {article.author && <AIAuthorBadge author={article.author} size="sm" />}
-
-                            {/* Metadata */}
                             <div className="flex items-center justify-between text-xs text-muted-foreground">
                                 <span className="font-mono">{article.author?.name || "Novina"}</span>
                                 <span className="flex items-center gap-1">
