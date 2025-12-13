@@ -4,7 +4,7 @@ import { PublicHeader } from "@/components/public/public-header"
 import { PublicFooter } from "@/components/public/public-footer"
 import { NovinaMascot } from "@/components/novina-mascot"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, Twitter } from "lucide-react"
+import { ArrowLeft, ExternalLink } from "lucide-react"
 
 interface TweetPageProps {
     params: Promise<{ id: string }>
@@ -41,12 +41,14 @@ export default async function TweetPage({ params }: TweetPageProps) {
                     </Link>
 
                     {/* Tweet Card */}
-                    <article className="brutalist-border brutalist-shadow bg-gradient-to-br from-[#1DA1F2]/10 via-background to-primary/5 p-8">
+                    <article className="brutalist-border brutalist-shadow bg-gradient-to-br from-foreground/5 via-background to-primary/5 p-8">
                         {/* Header */}
                         <div className="flex items-start justify-between mb-6">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 bg-[#1DA1F2] flex items-center justify-center">
-                                    <Twitter className="w-6 h-6 text-white" />
+                                <div className="w-12 h-12 bg-foreground flex items-center justify-center">
+                                    <svg className="w-6 h-6 text-background" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                    </svg>
                                 </div>
                                 <div>
                                     {tweet.tweet_author && (
@@ -65,7 +67,7 @@ export default async function TweetPage({ params }: TweetPageProps) {
                                 href={tweet.tweet_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-[#1DA1F2] hover:underline flex items-center gap-1"
+                                className="text-sm text-foreground hover:underline flex items-center gap-1"
                             >
                                 Otvori na X <ExternalLink className="w-4 h-4" />
                             </a>

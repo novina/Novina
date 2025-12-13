@@ -11,11 +11,11 @@ export function TweetRoastCard({ tweet }: TweetRoastCardProps) {
 
     return (
         <Link href={`/tweet/${tweet.id}`} className="block group">
-            <article className="relative overflow-hidden brutalist-border brutalist-shadow brutalist-hover bg-gradient-to-br from-[#1DA1F2]/10 via-background to-primary/10 p-6 h-full">
-                {/* Twitter Icon Badge */}
-                <div className="absolute top-4 right-4 w-8 h-8 bg-[#1DA1F2] flex items-center justify-center">
+            <article className="relative overflow-hidden brutalist-border brutalist-shadow brutalist-hover bg-gradient-to-br from-foreground/5 via-background to-primary/10 p-6 h-full">
+                {/* X Logo Badge */}
+                <div className="absolute top-4 right-4 w-8 h-8 bg-foreground flex items-center justify-center">
                     <svg
-                        className="w-4 h-4 text-white"
+                        className="w-4 h-4 text-background"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                     >

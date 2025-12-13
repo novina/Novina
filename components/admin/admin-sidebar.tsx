@@ -19,7 +19,7 @@ const navItems = [
   { href: "/admin/ai-news", label: "AI Vijesti", icon: Sparkles },
   { href: "/admin/illustrations", label: "AI Ilustracije", icon: Paintbrush },
   { href: "/admin/quotes", label: "Šale & Citati", icon: MessageCircle },
-  { href: "/admin/tweets", label: "Twitter/X", icon: Twitter },
+  { href: "/admin/tweets", label: "X Postovi", icon: Twitter },
   { href: "/admin/scraper", label: "Scraper", icon: Globe },
   { href: "/admin/links", label: "Link baza", icon: Link2 },
 ]
